@@ -1,0 +1,9 @@
+{
+  "name": "aoc",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "aoc": "node src/index.js"
+  },
+  "dependencies": {}
+}
