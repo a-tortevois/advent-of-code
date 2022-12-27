@@ -3,4 +3,6 @@
 node_modules
 /.cache/*.txt
 /src/aoc.secret.js
+.editorconfig
+.eslintrc.cjs
 package-lock.json
