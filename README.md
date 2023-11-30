@@ -16,8 +16,16 @@ Then exec:
 $ npm run aoc YEAR DAY LEVEL
 ```
 
-For exemple, to send your answer for AOC-2022 Day 1, Part 1:
+For exemple:
+
+- to test your answer for AOC-2023 Day 1, Part 1:
 
 ```
-$ npm run aoc 2022 1 1
+$ npm run aoc:dev 2023 1 1
+```
+
+- to submit your answer for AOC-2023 Day 1, Part 1:
+
+```
+$ npm run aoc 2023 1 1
 ```

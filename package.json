@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "aoc": "node src/index.js",
-    "aoc:dev": "cross-env NODE_ENV=dev node --watch-path=./solve-2022 src/index.js",
+    "aoc:dev": "cross-env NODE_ENV=dev node --watch-path=./solve-2023 src/index.js",
     "lint:fix": "eslint --fix ."
   },
   "devDependencies": {

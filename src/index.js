@@ -150,7 +150,8 @@ const main = async () => {
   // console.clear();
   const example = await getExample(DAY, USE_CACHE);
   const input = await getInput(DAY, USE_CACHE);
-  const answer = 0;
+  // eslint-disable-next-line prefer-const
+  let answer = 0;
   const exampleAnswer = 0;
   try {
     const fh = await fs.open(new URL(`../solve-${YEAR}/${`0${DAY}`.slice(-2)}-${LEVEL}.js`, import.meta.url), 'r');
