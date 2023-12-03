@@ -39,7 +39,7 @@ const getExample = async (day, useCache = false) => {
       };
       const res = await fetch(`${BASE_URL}/${YEAR}/day/${day}`, params);
       if (res.status === 200) {
-        const regex = /(?:For example.*?\n?<pre><code>((?:\n|.)*?)<\/code><\/pre>)/;
+        const regex = /(?:.*example.*?\n?<pre><code>((?:\n|.)*?)<\/code><\/pre>)/;
         const data = await res.text();
         if (regex.test(data)) {
           example = regex.exec(data)[1].trim();

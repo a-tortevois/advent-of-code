@@ -29,3 +29,19 @@ $ npm run aoc:dev 2023 1 1
 ```
 $ npm run aoc 2023 1 1
 ```
+
+
+## Solution template
+
+```javascript
+// Part X
+
+const parseInput = () => input.split('\n').map((line, index) => index);
+
+const main = () => {
+  const input = parseInput();
+  return input.reduce((prev, acc) => (prev += acc), 0);
+};
+
+answer = main();
+```
