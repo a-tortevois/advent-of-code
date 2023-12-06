@@ -4,7 +4,7 @@ import querystring from 'node:querystring';
 
 import { AOC_COOKIE } from './aoc.secret.js';
 
-const [YEAR, DAY, LEVEL] = process.argv.slice(2);
+const [YEAR, DAY, LEVEL, REFRESH] = process.argv.slice(2);
 const BASE_URL = 'https://adventofcode.com';
 const USE_CACHE = true;
 const CACHE_TIMEOUT = 3_600_000;
@@ -13,6 +13,9 @@ const inputFilePath = new URL('../.cache/input.txt', import.meta.url);
 const MODE_DEV = process.env.NODE_ENV === 'dev';
 
 const isInputFileNotExistOrOutdated = async (filePath) => {
+  if (REFRESH === 'refresh') {
+    return true;
+  }
   let flag = true;
   try {
     const fh = await fs.open(filePath, 'r');
@@ -159,10 +162,10 @@ const main = async () => {
     await fh.close();
     console.time('Exec time');
     eval(solution);
+    console.timeEnd('Exec time');
     if (MODE_DEV) {
       assert.equal(exampleAnswer, answer);
     }
-    console.timeEnd('Exec time');
     if (!MODE_DEV) {
       await submit(DAY, LEVEL, answer);
     }
