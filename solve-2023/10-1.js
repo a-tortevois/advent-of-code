@@ -9,28 +9,24 @@ const PIPES = {
   'F': [{ x: 1, y: 0 }, { x: 0, y: 1 }] // F is a 90-degree bend connecting south and east
 };
 
-// ---
-// Global variables
-// ---
-
 const startingPoint = {
   x: null,
   y: null
 };
-let grid;
+const grid = [];
 let H;
 let W;
 
-// ---
-
 const parseInput = () => {
-  grid = input.split('\n').map((line, index) => {
+  grid.push(...input.split('\n').map((line, index) => {
     if (line.includes('S')) {
       startingPoint.x = line.indexOf('S');
       startingPoint.y = index;
     }
     return line.split('');
-  });
+  }));
+  H = grid.length;
+  W = grid[0].length;
 };
 
 const coordToString = (c) => `${c.x};${c.y}`;
@@ -58,50 +54,19 @@ const isReachable = (from, to) => {
 
 const getVonNeumannNeighborhoods = (c) => [{ x: c.x + 1, y: c.y }, { x: c.x - 1, y: c.y }, { x: c.x, y: c.y - 1 }, { x: c.x, y: c.y + 1 }].filter((c) => isValidCoord(c));
 
-// const transformStartingPointToPipe = (nextCells) => {
-//   const interval = [];
-//   for (const nextCell of nextCells) {
-//     interval.push(coordToString({
-//       x: nextCell.x - startingPoint.x,
-//       y: nextCell.y - startingPoint.y
-//     }));
-//   }
-//   let pipeFound = null;
-//   for (const [pipe, coords] of Object.entries(PIPES)) {
-//     if (interval.includes(coordToString(coords[0])) && interval.includes(coordToString(coords[0]))) {
-//       pipeFound = pipe;
-//       break;
-//     }
-//   }
-//   grid[startingPoint.y][startingPoint.x] = pipeFound;
-// };
-
 const main = () => {
   parseInput();
-  H = grid.length;
-  W = grid[0].length;
-
-  console.log(grid, startingPoint);
-
   let nextCells;
-  let nextCell;
-
   // First move
   const path = [coordToString(startingPoint)];
   nextCells = getVonNeumannNeighborhoods(startingPoint).filter((to) => isReachable(to, startingPoint));
-  // transformStartingPointToPipe(nextCells);
-  nextCell = nextCells[0];
-
-  while (true) {
-    path.push(coordToString(nextCell));
-    nextCells = getVonNeumannNeighborhoods(nextCell).filter((to) => isReachable(nextCell, to)).filter((c) => !path.includes(coordToString(c)));
+  // Search complete path
+  while (nextCells.length > 0) {
+    path.push(coordToString(nextCells[0]));
+    nextCells = getVonNeumannNeighborhoods(nextCells[0]).filter((to) => isReachable(nextCells[0], to)).filter((c) => !path.includes(coordToString(c)));
     if (nextCells.length > 1) {
       throw new Error('Unable to find a unique next cell', nextCells);
     }
-    if (nextCells.length === 0) {
-      break;
-    }
-    nextCell = nextCells[0];
   }
   return (path.length / 2);
 };
