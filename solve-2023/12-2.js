@@ -1,4 +1,23 @@
+/* eslint-disable func-names */
 // Part 2
+
+// https://stackoverflow.com/questions/71332828/how-do-i-make-this-higher-order-memoization-function-work-for-recursive-function
+/**
+ * @param {Function} fn
+ * @param {Map} [cache]
+ * @returns {Function}
+ */
+function memoize(fn, cache = new Map()) {
+  return function(...args) {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    const result = fn(...args);
+    cache.set(key, result);
+    return result;
+  };
+}
 
 const parseInput = () => {
   const data = [];
@@ -12,7 +31,7 @@ const parseInput = () => {
   return data;
 };
 
-let getNbArrangements = (records, sizes) => {
+const getNbArrangements = memoize((records, sizes) => {
   if (records.length === 0) {
     return (sizes.length === 0) ? 1 : 0;
   }
@@ -40,19 +59,7 @@ let getNbArrangements = (records, sizes) => {
 
   return getNbArrangements(`#${records.slice(1)}`, sizes)
        + getNbArrangements(`.${records.slice(1)}`, sizes);
-};
-
-const memoize = (fn, cache = new Map()) => (...args) => {
-  const key = JSON.stringify(args);
-  if (cache.has(key)) {
-    return cache.get(key);
-  }
-  const result = fn(...args);
-  cache.set(key, result);
-  return result;
-};
-
-getNbArrangements = memoize(getNbArrangements);
+});
 
 const main = () => {
   const data = parseInput();
