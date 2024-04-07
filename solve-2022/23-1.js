@@ -10,7 +10,7 @@ const DIRECTIONS = {
   E: { x: 1, y: 0 },
   SW: { x: -1, y: 1 },
   S: { x: 0, y: 1 },
-  SE: { x: 1, y: 1 }
+  SE: { x: 1, y: 1 },
 };
 
 const coordsToString = ({ x, y }) => `${x};${y}`;
@@ -28,16 +28,7 @@ const parseData = (data) => {
 };
 
 const hasNeighbors = ({ x, y }) => {
-  const coords = [
-    DIRECTIONS.NW,
-    DIRECTIONS.N,
-    DIRECTIONS.NE,
-    DIRECTIONS.W,
-    DIRECTIONS.E,
-    DIRECTIONS.SW,
-    DIRECTIONS.S,
-    DIRECTIONS.SE
-  ].map((v) => coordsToString({ x: x + v.x, y: y + v.y }));
+  const coords = [DIRECTIONS.NW, DIRECTIONS.N, DIRECTIONS.NE, DIRECTIONS.W, DIRECTIONS.E, DIRECTIONS.SW, DIRECTIONS.S, DIRECTIONS.SE].map((v) => coordsToString({ x: x + v.x, y: y + v.y }));
   for (const coord of coords) {
     if (elvesPositions.has(coord)) {
       return true;
@@ -86,7 +77,12 @@ const canMoveToEast = ({ x, y }) => {
   return true;
 };
 
-const MOVING_PRIORITY = [{ canMove: canMoveToNorth, move: DIRECTIONS.N }, { canMove: canMoveToSouth, move: DIRECTIONS.S }, { canMove: canMoveToWest, move: DIRECTIONS.W }, { canMove: canMoveToEast, move: DIRECTIONS.E }];
+const MOVING_PRIORITY = [
+  { canMove: canMoveToNorth, move: DIRECTIONS.N },
+  { canMove: canMoveToSouth, move: DIRECTIONS.S },
+  { canMove: canMoveToWest, move: DIRECTIONS.W },
+  { canMove: canMoveToEast, move: DIRECTIONS.E },
+];
 
 const playRound = (n) => {
   const movingProposal = new Map();
@@ -160,4 +156,4 @@ for (let i = 0; i < 10; i++) {
 // printElvesPositions();
 const { minX, maxX, minY, maxY } = getCoordInteval();
 
-answer = ((maxX - minX + 1) * (maxY - minY + 1)) - elvesPositions.size;
+answer = (maxX - minX + 1) * (maxY - minY + 1) - elvesPositions.size;

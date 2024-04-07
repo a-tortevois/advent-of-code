@@ -6,13 +6,16 @@ const LAVA = Symbol('lava');
 const AIR = Symbol('air');
 
 const parseData = (data) => {
-  const points = data.split('\n').map((v) => v.split(',')).map((c) => {
-    return {
-      x: Number(c[0]),
-      y: Number(c[1]),
-      z: Number(c[2])
-    };
-  });
+  const points = data
+    .split('\n')
+    .map((v) => v.split(','))
+    .map((c) => {
+      return {
+        x: Number(c[0]),
+        y: Number(c[1]),
+        z: Number(c[2]),
+      };
+    });
 
   const [W, H, D] = getAxisDimensions(points);
 
@@ -27,20 +30,23 @@ const parseData = (data) => {
 
 const getAxisDimensions = (points) => ['x', 'y', 'z'].map((axe) => Math.max(...points.map((c) => c[axe])) + 1);
 
-const isValidCoord = ({ x, y, z }) => (x >= 0 && x < W && y >= 0 && y < H && z >= 0 && z < D);
+const isValidCoord = ({ x, y, z }) => x >= 0 && x < W && y >= 0 && y < H && z >= 0 && z < D;
 
-const getNeighbours = ({ x, y, z }, filteredBy) => [
-  { x: x - 1, y, z },
-  { x: x + 1, y, z },
-  { x, y: y - 1, z },
-  { x, y: y + 1, z },
-  { x, y, z: z - 1 },
-  { x, y, z: z + 1 }
-].filter((coord) => isValidCoord(coord)).filter(({ x, y, z }) => matrix[x][y][z] === filteredBy);
+const getNeighbours = ({ x, y, z }, filteredBy) =>
+  [
+    { x: x - 1, y, z },
+    { x: x + 1, y, z },
+    { x, y: y - 1, z },
+    { x, y: y + 1, z },
+    { x, y, z: z - 1 },
+    { x, y, z: z + 1 },
+  ]
+    .filter((coord) => isValidCoord(coord))
+    .filter(({ x, y, z }) => matrix[x][y][z] === filteredBy);
 
 const coordToString = ({ x, y, z }) => `(${x};${y};${z})`;
 
-const isOnBorder = ({ x, y, z }) => (x === 0 || x === W - 1 || y === 0 || y === H - 1 || z === 0 && z === D - 1);
+const isOnBorder = ({ x, y, z }) => x === 0 || x === W - 1 || y === 0 || y === H - 1 || (z === 0 && z === D - 1);
 
 const BFS = (from, visited) => {
   const hash = coordToString(from);

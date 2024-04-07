@@ -2,7 +2,8 @@
 
 const getPriority = (item) => {
   const index = item.charCodeAt(0);
-  if (index < 0x5b) { // Uppercase
+  if (index < 0x5b) {
+    // Uppercase
     return index - 38;
   } // Lowercase
   return index - 96;
@@ -15,12 +16,14 @@ const compareRucksacks = (c1, c2, c3) => {
       const bPriority = getPriority(b);
       if (aPriority > bPriority) {
         break;
-      } else if (aPriority === bPriority) {
+      }
+      if (aPriority === bPriority) {
         for (const c of c3) {
           const cPriority = getPriority(c);
           if (bPriority > cPriority) {
             break;
-          } else if (bPriority === cPriority) {
+          }
+          if (bPriority === cPriority) {
             return cPriority;
           }
         }

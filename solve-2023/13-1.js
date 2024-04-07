@@ -23,7 +23,7 @@ const parseInput = () => {
 
 const searchPossibleReflectionPoints = (array) => {
   const possibleReflectionPoints = [];
-  for (let i = 0; i < (array.length - 1); i++) {
+  for (let i = 0; i < array.length - 1; i++) {
     if (array[i] === array[i + 1]) {
       possibleReflectionPoints.push(i + 1);
     }
@@ -57,10 +57,10 @@ const main = () => {
   for (const { rows, columns } of blocks) {
     const hReflectionPoint = getReflectionPoint(rows);
     const vReflectionPoint = getReflectionPoint(columns);
-    if ((Boolean(hReflectionPoint) + Boolean(vReflectionPoint)) === 0) {
+    if (Boolean(hReflectionPoint) + Boolean(vReflectionPoint) === 0) {
       throw new Error('No reflection point found (horizontal + vertical)');
     }
-    if ((Boolean(hReflectionPoint) + Boolean(vReflectionPoint)) > 1) {
+    if (Boolean(hReflectionPoint) + Boolean(vReflectionPoint) > 1) {
       throw new Error('Found more than one reflection point (horizontal + vertical)');
     }
     sum += 100 * hReflectionPoint;

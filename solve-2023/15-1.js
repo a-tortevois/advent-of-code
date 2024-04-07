@@ -12,6 +12,9 @@ const getHash = (str) => {
   return hash;
 };
 
-const main = () => parseInput().map(getHash).reduce((prev, curr) => prev + curr, 0);
+const main = () =>
+  parseInput()
+    .map(getHash)
+    .reduce((prev, curr) => prev + curr, 0);
 
 answer = main(); // 512797

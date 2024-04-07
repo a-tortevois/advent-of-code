@@ -7,13 +7,15 @@ let zMax = 0;
 const parseInput = () => {
   const bricks = [];
   for (const line of input.split('\n')) {
-    bricks.push(line.split('~').map((coord) => {
-      const [x, y, z] = coord.split(',').map(Number);
-      xMax = Math.max(xMax, x);
-      yMax = Math.max(yMax, y);
-      zMax = Math.max(zMax, z);
-      return [x, y, z];
-    }));
+    bricks.push(
+      line.split('~').map((coord) => {
+        const [x, y, z] = coord.split(',').map(Number);
+        xMax = Math.max(xMax, x);
+        yMax = Math.max(yMax, y);
+        zMax = Math.max(zMax, z);
+        return [x, y, z];
+      }),
+    );
   }
   bricks.sort((a, b) => a[0].z - b[0].z);
   return bricks;
@@ -54,7 +56,10 @@ const brickCanMove = (grid, bricks, brickIndex) => {
 
 const moveBrickDown = (grid, bricks, brickIndex) => {
   const [[x1, y1, z1], [x2, y2, z2]] = bricks[brickIndex];
-  bricks[brickIndex] = [[x1, y1, z1 - 1], [x2, y2, z2 - 1]];
+  bricks[brickIndex] = [
+    [x1, y1, z1 - 1],
+    [x2, y2, z2 - 1],
+  ];
   for (let x = x1; x <= x2; x++) {
     for (let y = y1; y <= y2; y++) {
       for (let z = z1; z <= z2; z++) {

@@ -4,9 +4,9 @@ const data = input;
 
 const DIRECTIONS = {
   '>': { x: 1, y: 0 },
-  'v': { x: 0, y: 1 },
+  v: { x: 0, y: 1 },
   '<': { x: -1, y: 0 },
-  '^': { x: 0, y: -1 }
+  '^': { x: 0, y: -1 },
 };
 
 const MAX_BLIZZARD_POSITIONS = 1_000;
@@ -24,15 +24,15 @@ const parseData = (data) => {
   const W = grid[0].length;
   const expeditionPos = {
     x: grid[0].indexOf('.'),
-    y: 0
+    y: 0,
   };
   const entryPoint = {
     x: grid[0].indexOf('.'),
-    y: 1
+    y: 1,
   };
   const exitPoint = {
     x: grid[H - 1].indexOf('.'),
-    y: H - 2
+    y: H - 2,
   };
   const blizzardsPositions = [];
   for (let t = 0; t < MAX_BLIZZARD_POSITIONS; t++) {
@@ -43,23 +43,23 @@ const parseData = (data) => {
         let nextY = null;
         switch (grid[i][j]) {
           case '>': {
-            nextX = 1 + moduloEuclidian((j + t - 1), (W - 2));
+            nextX = 1 + moduloEuclidian(j + t - 1, W - 2);
             nextY = i;
             break;
           }
           case '<': {
-            nextX = 1 + moduloEuclidian((j - t - 1), (W - 2));
+            nextX = 1 + moduloEuclidian(j - t - 1, W - 2);
             nextY = i;
             break;
           }
           case 'v': {
             nextX = j;
-            nextY = 1 + moduloEuclidian((i + t - 1), (H - 2));
+            nextY = 1 + moduloEuclidian(i + t - 1, H - 2);
             break;
           }
           case '^': {
             nextX = j;
-            nextY = 1 + moduloEuclidian((i - t - 1), (H - 2));
+            nextY = 1 + moduloEuclidian(i - t - 1, H - 2);
             break;
           }
           default: {
@@ -75,19 +75,27 @@ const parseData = (data) => {
   }
 
   return {
-    blizzardsPositions, H, W, expeditionPos, exitPoint, entryPoint
+    blizzardsPositions,
+    H,
+    W,
+    expeditionPos,
+    exitPoint,
+    entryPoint,
   };
 };
 
-const isExitPoint = ({ x, y }) => (x === exitPoint.x && y === exitPoint.y);
+const isExitPoint = ({ x, y }) => x === exitPoint.x && y === exitPoint.y;
 
-const isEntryPoint = ({ x, y }) => (x === entryPoint.x && y === entryPoint.y);
+const isEntryPoint = ({ x, y }) => x === entryPoint.x && y === entryPoint.y;
 
-const isValidCoord = ({ x, y }) => (x > 0 && x < W - 1 && y > 0 && y < H - 1);
+const isValidCoord = ({ x, y }) => x > 0 && x < W - 1 && y > 0 && y < H - 1;
 
-const getVonNeumannNeighborhood = ({ x, y }) => [DIRECTIONS['>'], DIRECTIONS.v, DIRECTIONS['<'], DIRECTIONS['^']].map((v) => {
-  return { x: x + v.x, y: y + v.y };
-}).filter((v) => isValidCoord(v));
+const getVonNeumannNeighborhood = ({ x, y }) =>
+  [DIRECTIONS['>'], DIRECTIONS.v, DIRECTIONS['<'], DIRECTIONS['^']]
+    .map((v) => {
+      return { x: x + v.x, y: y + v.y };
+    })
+    .filter((v) => isValidCoord(v));
 
 const getHashOfPositionInTime = ({ x, y, t }) => `${x}:${y}:${t}`;
 
@@ -114,9 +122,7 @@ const doExploration = (fromTime, isArrived) => {
   }
 };
 
-const {
-  blizzardsPositions, H, W, expeditionPos, exitPoint, entryPoint
-} = parseData(data);
+const { blizzardsPositions, H, W, expeditionPos, exitPoint, entryPoint } = parseData(data);
 let timeToExplore;
 // 1. from the start to the goal
 timeToExplore = doExploration(0, isExitPoint);

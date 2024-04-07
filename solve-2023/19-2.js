@@ -16,14 +16,14 @@ const parseInput = () => {
             part: groups.part,
             output: groups.output,
             operator: groups.operator,
-            value: Number(groups.value)
+            value: Number(groups.value),
           };
         }
         return { output: rule };
       });
       workflows[name] = {
         rules: workflows[name].slice(0, -1),
-        default: workflows[name].slice(-1)[0].output
+        default: workflows[name].slice(-1)[0].output,
       };
     }
   }
@@ -35,13 +35,15 @@ const workflowIsEnded = (part) => ['A', 'R'].includes(part.workflow);
 
 const execWorkflows = () => {
   let combinations = 0;
-  const queue = [{
-    workflow: 'in',
-    x: { min: 1, max: 4000 },
-    m: { min: 1, max: 4000 },
-    a: { min: 1, max: 4000 },
-    s: { min: 1, max: 4000 }
-  }];
+  const queue = [
+    {
+      workflow: 'in',
+      x: { min: 1, max: 4000 },
+      m: { min: 1, max: 4000 },
+      a: { min: 1, max: 4000 },
+      s: { min: 1, max: 4000 },
+    },
+  ];
   while (queue.length > 0) {
     let currPart = queue.shift();
     const workflow = workflows[currPart.workflow];

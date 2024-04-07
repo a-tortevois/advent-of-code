@@ -7,7 +7,7 @@ for (const c of input.split('\n')) {
     caloriesMax = Math.max(caloriesCount, caloriesMax);
     caloriesCount = 0;
   } else {
-    caloriesCount += parseInt(c, 10);
+    caloriesCount += Number.parseInt(c, 10);
   }
 }
 

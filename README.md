@@ -27,7 +27,7 @@ $ npm run aoc:dev 2023 1 1
 - to refresh input and test your answer for AOC-2023 Day 1, Part 1:
 
 ```bash
-$ npm run aoc:dev 2023 1 1 refresh
+$ npm run aoc:dev 2023 1 1 no-cache
 ```
 
 - to submit your answer for AOC-2023 Day 1, Part 1:

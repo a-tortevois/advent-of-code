@@ -21,7 +21,7 @@ const parseInput = () => {
   return blocks;
 };
 
-const lineToNum = (line) => parseInt(line.replaceAll('.', '0').replaceAll('#', '1'), 2);
+const lineToNum = (line) => Number.parseInt(line.replaceAll('.', '0').replaceAll('#', '1'), 2);
 
 const getErrors = (line1, line2) => {
   const n1 = lineToNum(line1);
@@ -40,7 +40,7 @@ const isPossiblySmudged = (line1, line2) => getErrors(line1, line2) === 1;
 
 const searchPossibleReflectionPoints = (array) => {
   const possibleReflectionPoints = [];
-  for (let i = 0; i < (array.length - 1); i++) {
+  for (let i = 0; i < array.length - 1; i++) {
     if (array[i] === array[i + 1]) {
       possibleReflectionPoints.push(i + 1);
     } else if (isPossiblySmudged(array[i], array[i + 1])) {
@@ -83,10 +83,10 @@ const main = () => {
   for (const { rows, columns } of blocks) {
     const hReflectionPoint = getReflectionPoint(rows);
     const vReflectionPoint = getReflectionPoint(columns);
-    if ((Boolean(hReflectionPoint) + Boolean(vReflectionPoint)) === 0) {
+    if (Boolean(hReflectionPoint) + Boolean(vReflectionPoint) === 0) {
       throw new Error('No reflection point found (horizontal + vertical)');
     }
-    if ((Boolean(hReflectionPoint) + Boolean(vReflectionPoint)) > 1) {
+    if (Boolean(hReflectionPoint) + Boolean(vReflectionPoint) > 1) {
       throw new Error('Found more than one reflection point (horizontal + vertical)');
     }
     sum += 100 * hReflectionPoint;

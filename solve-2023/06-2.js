@@ -1,7 +1,10 @@
 // Part 2
 
 const parseInput = () => {
-  const lines = input.split('\n').map((line) => line.split(':')[1].replaceAll((' '), '')).map(Number);
+  const lines = input
+    .split('\n')
+    .map((line) => line.split(':')[1].replaceAll(' ', ''))
+    .map(Number);
   return lines;
 };
 

@@ -11,7 +11,7 @@ const parseCratesInput = (cratesInput) => {
   }
   for (const i in cratesInput) {
     for (const match of stackCount) {
-      const index = parseInt(match[1], 10) - 1;
+      const index = Number.parseInt(match[1], 10) - 1;
       const name = cratesInput[i].charAt(match.index);
       if (name !== ' ') {
         cratesStack[index].push(name);
@@ -25,7 +25,7 @@ const parseMovesInput = (movesInput) => {
   const moves = [];
   for (const move of movesInput) {
     const [crateCount, from, to] = move.match(/\d+/g);
-    moves.push({ crateCount: parseInt(crateCount, 10), from: from - 1, to: to - 1 });
+    moves.push({ crateCount: Number.parseInt(crateCount, 10), from: from - 1, to: to - 1 });
   }
   return moves;
 };

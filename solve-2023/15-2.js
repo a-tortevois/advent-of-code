@@ -2,7 +2,7 @@
 
 const OPERATION = {
   HIGHLIGHT: '=',
-  REMOVE: '-'
+  REMOVE: '-',
 };
 
 let steps;
@@ -17,12 +17,12 @@ const parseInput = () => {
       step = {
         operation: OPERATION.HIGHLIGHT,
         label,
-        focal: Number(focal)
+        focal: Number(focal),
       };
     } else {
       step = {
         operation: OPERATION.REMOVE,
-        label: sequence.slice(0, -1)
+        label: sequence.slice(0, -1),
       };
     }
     return step;

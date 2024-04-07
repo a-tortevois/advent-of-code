@@ -19,7 +19,7 @@ const main = () => {
   let sum = 0;
   for (const line of lines) {
     const extrapolations = Array.from([line]);
-    while (!(/^[0]+$/.test(extrapolations[extrapolations.length - 1].join('')))) {
+    while (!/^[0]+$/.test(extrapolations[extrapolations.length - 1].join(''))) {
       extrapolations.push(extrapolateLine(extrapolations[extrapolations.length - 1]));
     }
     const extrapolationsLength = extrapolations.length - 1;

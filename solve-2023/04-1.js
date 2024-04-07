@@ -15,7 +15,7 @@ const parseInput = () => {
 
 const getScore = (card) => {
   const winningNumbers = card.winningNumbers.filter((number) => card.ownNumbers.includes(number));
-  const score = winningNumbers.length > 0 ? Math.pow(2, Math.max(winningNumbers.length - 1, 0)) : 0;
+  const score = winningNumbers.length > 0 ? 2 ** Math.max(winningNumbers.length - 1, 0) : 0;
   return score;
 };
 

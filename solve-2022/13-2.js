@@ -22,12 +22,15 @@ const comparePackets = (packet1, packet2) => {
     return packet1.length - packet2.length;
   }
   // Mixed types
-  return (typeof packet1 === 'object') ? comparePackets(packet1, [packet2]) : comparePackets([packet1], packet2);
+  return typeof packet1 === 'object' ? comparePackets(packet1, [packet2]) : comparePackets([packet1], packet2);
 };
 
 const dividerPacketA = [[2]];
 const dividerPacketB = [[6]];
-const packetPairs = input.split('\n').filter((v) => v !== '').map(JSON.parse);
+const packetPairs = input
+  .split('\n')
+  .filter((v) => v !== '')
+  .map(JSON.parse);
 packetPairs.push(dividerPacketA, dividerPacketB);
 packetPairs.sort(comparePackets);
 

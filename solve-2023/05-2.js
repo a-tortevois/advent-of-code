@@ -1,14 +1,6 @@
 // Part 2
 
-const RESSOURCES = [
-  'soil',
-  'fertilizer',
-  'water',
-  'light',
-  'temperature',
-  'humidity',
-  'location'
-];
+const RESSOURCES = ['soil', 'fertilizer', 'water', 'light', 'temperature', 'humidity', 'location'];
 
 const parseInput = () => {
   const data = {};

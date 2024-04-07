@@ -4,65 +4,79 @@ const S = 50;
 
 const getNext = (nextX, nextY, nextFacing) => {
   if (nextX < 0) {
-    if (nextY < (S * 3)) { // From 2W to 5W
+    if (nextY < S * 3) {
+      // From 2W to 5W
       nextX = S;
-      nextY = (S * 3) - 1 - nextY;
+      nextY = S * 3 - 1 - nextY;
       nextFacing = 0;
-    } else { // From 1W to 5N
-      nextX = S + (nextY - (S * 3));
+    } else {
+      // From 1W to 5N
+      nextX = S + (nextY - S * 3);
       nextY = 0;
       nextFacing = 1;
     }
-  } else if (nextX >= W) { // From 6E to 3E
-    nextX = (S * 2) - 1;
-    nextY = (S * 2) + (S - 1 - nextY);
+  } else if (nextX >= W) {
+    // From 6E to 3E
+    nextX = S * 2 - 1;
+    nextY = S * 2 + (S - 1 - nextY);
     nextFacing = 2;
   } else if (nextY < 0) {
-    if (nextX < (S * 2)) { // From 5N to 1W
-      nextY = (S * 3) + (nextX - S);
+    if (nextX < S * 2) {
+      // From 5N to 1W
+      nextY = S * 3 + (nextX - S);
       nextX = 0;
       nextFacing = 0;
-    } else { // From 6N to 1S
-      nextX -= (S * 2);
+    } else {
+      // From 6N to 1S
+      nextX -= S * 2;
       nextY = H - 1;
     }
-  } else if (nextY >= H) { // From 1S to 6N
-    nextX += (S * 2);
+  } else if (nextY >= H) {
+    // From 1S to 6N
+    nextX += S * 2;
     nextY = 0;
   } else if (nextX === S - 1 && nextFacing === 2) {
-    if (nextY < S) { // From 5W to 2W
+    if (nextY < S) {
+      // From 5W to 2W
       nextX = 0;
-      nextY = (S * 2) + (S - 1 - nextY);
+      nextY = S * 2 + (S - 1 - nextY);
       nextFacing = 0;
-    } else { // From 4W to 2N
+    } else {
+      // From 4W to 2N
       nextX = nextY - S;
-      nextY = (S * 2);
+      nextY = S * 2;
       nextFacing = 1;
     }
-  } else if (nextX === S && nextFacing === 0) { // From 1E to 3S
-    nextX = S + (nextY - (S * 3));
-    nextY = (S * 3) - 1;
+  } else if (nextX === S && nextFacing === 0) {
+    // From 1E to 3S
+    nextX = S + (nextY - S * 3);
+    nextY = S * 3 - 1;
     nextFacing = 3;
-  } else if (nextX === (S * 2) && nextFacing === 0) {
-    if (nextY < (S * 2)) { // From 4E to 6S
-      nextX = (S * 2) + (nextY - S);
+  } else if (nextX === S * 2 && nextFacing === 0) {
+    if (nextY < S * 2) {
+      // From 4E to 6S
+      nextX = S * 2 + (nextY - S);
       nextY = S - 1;
       nextFacing = 3;
-    } else { // From 3E to 6E
+    } else {
+      // From 3E to 6E
       nextX = W - 1;
-      nextY = ((S * 3) - 1 - nextY);
+      nextY = S * 3 - 1 - nextY;
       nextFacing = 2;
     }
-  } else if (nextY === S && nextFacing === 1) { // From 6S to 4E
-    nextY = S + (nextX - (S * 2));
-    nextX = (S * 2) - 1;
+  } else if (nextY === S && nextFacing === 1) {
+    // From 6S to 4E
+    nextY = S + (nextX - S * 2);
+    nextX = S * 2 - 1;
     nextFacing = 2;
-  } else if (nextY === (S * 2) - 1 && nextFacing === 3) { // From 2N to 4W
+  } else if (nextY === S * 2 - 1 && nextFacing === 3) {
+    // From 2N to 4W
     nextY = S + nextX;
     nextX = S;
     nextFacing = 0;
-  } else if (nextY === (S * 3) && nextFacing === 1) { // From 3S to 1E
-    nextY = (S * 3) + (nextX - S);
+  } else if (nextY === S * 3 && nextFacing === 1) {
+    // From 3S to 1E
+    nextY = S * 3 + (nextX - S);
     nextX = S - 1;
     nextFacing = 2;
   } else {

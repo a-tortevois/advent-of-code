@@ -9,17 +9,17 @@ class Monkey {
     const lines = monkeyInput.split('\n').map((v) => v.split(':').map((v) => v.trim()));
     for (const line of lines) {
       if (line[0].startsWith('Monkey')) {
-        this.id = parseInt(regexGetInteger.exec(line[0])[1], 10);
+        this.id = Number.parseInt(regexGetInteger.exec(line[0])[1], 10);
       } else if (line[0] === 'Starting items') {
-        this.itemsWorryLevel = line[1].split(',').map((v) => parseInt(v.trim(), 10));
+        this.itemsWorryLevel = line[1].split(',').map((v) => Number.parseInt(v.trim(), 10));
       } else if (line[0] === 'Operation') {
         this.operation = line[1].split('=')[1].trim().replaceAll('old', 'v');
       } else if (line[0] === 'Test') {
-        this.divisibleBy = parseInt(regexGetInteger.exec(line[1])[1], 10);
+        this.divisibleBy = Number.parseInt(regexGetInteger.exec(line[1])[1], 10);
       } else if (line[0] === 'If true') {
-        this.nextTrue = parseInt(regexGetInteger.exec(line[1])[1], 10);
+        this.nextTrue = Number.parseInt(regexGetInteger.exec(line[1])[1], 10);
       } else if (line[0] === 'If false') {
-        this.nextFalse = parseInt(regexGetInteger.exec(line[1])[1], 10);
+        this.nextFalse = Number.parseInt(regexGetInteger.exec(line[1])[1], 10);
       }
     }
     this.inspectionsCount = 0;
@@ -30,6 +30,7 @@ class Monkey {
   }
 
   doInspections() {
+    // biome-ignore lint/security/noGlobalEval: <explanation>
     this.itemsWorryLevel = this.itemsWorryLevel.map((v) => Math.floor(eval(this.operation) / DIVIDER));
     this.inspectionsCount += this.itemsWorryLevel.length;
   }
@@ -39,7 +40,7 @@ class Monkey {
   }
 
   getNext(itemWorryLevel) {
-    return (itemWorryLevel % this.divisibleBy === 0) ? this.nextTrue : this.nextFalse;
+    return itemWorryLevel % this.divisibleBy === 0 ? this.nextTrue : this.nextFalse;
   }
 
   getInspectionsCount() {
@@ -54,7 +55,7 @@ class Monkey {
       operation: this.operation,
       divisibleBy: this.divisibleBy,
       nextTrue: this.nextTrue,
-      nextFalse: this.nextFalse
+      nextFalse: this.nextFalse,
     });
   }
 }

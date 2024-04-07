@@ -1,26 +1,38 @@
 // Part 1
 
 const getRunPoints = (player1, player2) => {
-  if (player2 === 'X') { // Rock
-    if (player1 === 'C') { // Scissors
+  // Rock
+  if (player2 === 'X') {
+    // Scissors
+    if (player1 === 'C') {
       return 7; // Rock defeats Scissors
-    } else if (player1 === 'A') { // Rock
+    }
+    // Rock
+    if (player1 === 'A') {
       return 4; // draw
     }
     return 1;
   }
-  if (player2 === 'Y') { // Paper
-    if (player1 === 'A') { // Rock
+  // Paper
+  if (player2 === 'Y') {
+    // Rock
+    if (player1 === 'A') {
       return 8; // Paper defeats Rock
-    } else if (player1 === 'B') { // Paper
+    }
+    // Paper
+    if (player1 === 'B') {
       return 5; // draw
     }
     return 2;
   }
-  if (player2 === 'Z') { // Scissors
-    if (player1 === 'B') { // Paper
+  // Scissors
+  if (player2 === 'Z') {
+    // Paper
+    if (player1 === 'B') {
       return 9; // Scissors defeats Paper
-    } else if (player1 === 'C') { // Scissors
+    }
+    // Scissors
+    if (player1 === 'C') {
       return 6; // draw
     }
     return 3;

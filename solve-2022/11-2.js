@@ -9,17 +9,17 @@ class Monkey {
     const lines = monkeyInput.split('\n').map((v) => v.split(':').map((v) => v.trim()));
     for (const line of lines) {
       if (line[0].startsWith('Monkey')) {
-        this._id = parseInt(regexGetInteger.exec(line[0])[1], 10);
+        this._id = Number.parseInt(regexGetInteger.exec(line[0])[1], 10);
       } else if (line[0] === 'Starting items') {
-        this._itemsWorryLevel = line[1].split(',').map((v) => parseInt(v.trim(), 10));
+        this._itemsWorryLevel = line[1].split(',').map((v) => Number.parseInt(v.trim(), 10));
       } else if (line[0] === 'Operation') {
         this._operation = line[1].split('=')[1].trim().replaceAll('old', 'v');
       } else if (line[0] === 'Test') {
-        this._divisibleBy = parseInt(regexGetInteger.exec(line[1])[1], 10);
+        this._divisibleBy = Number.parseInt(regexGetInteger.exec(line[1])[1], 10);
       } else if (line[0] === 'If true') {
-        this._nextTrue = parseInt(regexGetInteger.exec(line[1])[1], 10);
+        this._nextTrue = Number.parseInt(regexGetInteger.exec(line[1])[1], 10);
       } else if (line[0] === 'If false') {
-        this._nextFalse = parseInt(regexGetInteger.exec(line[1])[1], 10);
+        this._nextFalse = Number.parseInt(regexGetInteger.exec(line[1])[1], 10);
       }
     }
     this._inspectionsCount = 0;
@@ -42,7 +42,8 @@ class Monkey {
   }
 
   doInspections() {
-    this._itemsWorryLevel = this._itemsWorryLevel.map((v) => (eval(this._operation) % DIVIDER));
+    // biome-ignore lint/security/noGlobalEval: <explanation>
+    this._itemsWorryLevel = this._itemsWorryLevel.map((v) => eval(this._operation) % DIVIDER);
     this._inspectionsCount += this._itemsWorryLevel.length;
   }
 
@@ -51,7 +52,7 @@ class Monkey {
   }
 
   getNext(itemWorryLevel) {
-    return (itemWorryLevel % this.divisibleBy === 0) ? this._nextTrue : this._nextFalse;
+    return itemWorryLevel % this.divisibleBy === 0 ? this._nextTrue : this._nextFalse;
   }
 
   print() {
@@ -62,7 +63,7 @@ class Monkey {
       operation: this._operation,
       divisibleBy: this._divisibleBy,
       nextTrue: this._nextTrue,
-      nextFalse: this._nextFalse
+      nextFalse: this._nextFalse,
     });
   }
 }

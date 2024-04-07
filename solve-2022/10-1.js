@@ -20,7 +20,7 @@ for (const instruction of instructions) {
   } else if (instruction[0] === 'addx') {
     consumeCycle();
     consumeCycle();
-    X += parseInt(instruction[1], 10);
+    X += Number.parseInt(instruction[1], 10);
   }
   if (cyclesCount >= 220) {
     break;

@@ -23,12 +23,12 @@ class Blueprint {
       robotObsidianCostOre: this.robotObsidianCostOre,
       robotObsidianCostClay: this.robotObsidianCostClay,
       robotGeodeCostOre: this.robotGeodeCostOre,
-      robotGeodeCostObsidian: this.robotGeodeCostObsidian
+      robotGeodeCostObsidian: this.robotGeodeCostObsidian,
     };
   }
 
   toString() {
-    let str = ``;
+    let str = '';
     str += `Blueprint #${this.id}:\n`;
     str += ` - Each ore robot costs ${this.robotOreCostOre} ore.\n`;
     str += ` - Each clay robot costs ${this.robotClayCostOre} ore.\n`;
@@ -61,7 +61,7 @@ class CollectingState {
       robotsClay: this.robotsClay,
       robotsObsidian: this.robotsObsidian,
       robotsGeode: this.robotsGeode,
-      time: this.time
+      time: this.time,
     };
   }
 
@@ -70,7 +70,7 @@ class CollectingState {
   }
 
   toString() {
-    let str = ``;
+    let str = '';
     str += `State t=${this.time}: `;
     str += `Stock(Or=${this.stockOre},Cl=${this.stockClay},Ob=${this.stockObsidian},Ge=${this.stockGeode}) `;
     str += `Robots(Or=${this.robotsOre},Cl=${this.robotsClay},Ob=${this.robotsObsidian},Ge=${this.robotsGeode})`;
@@ -82,24 +82,14 @@ const parseData = (data) => {
   const blueprintsMap = new Map();
   const regex = new RegExp(/(\d+)+/, 'g');
   for (const line of data.split('\n')) {
-    const [
-      id,
-      robotOreCostOre,
-      robotClayCostOre,
-      robotObsidianCostOre,
-      robotObsidianCostClay,
-      robotGeodeCostOre,
-      robotGeodeCostObsidian
-    ] = [...line.matchAll(regex)].map((v) => v[1]);
+    const [id, robotOreCostOre, robotClayCostOre, robotObsidianCostOre, robotObsidianCostClay, robotGeodeCostOre, robotGeodeCostObsidian] = [...line.matchAll(regex)].map((v) => v[1]);
     blueprintsMap.set(id, new Blueprint(id, robotOreCostOre, robotClayCostOre, robotObsidianCostOre, robotObsidianCostClay, robotGeodeCostOre, robotGeodeCostObsidian));
   }
   return blueprintsMap;
 };
 
 const solve = (blueprint, time) => {
-  const {
-    id, robotOreCostOre, robotClayCostOre, robotObsidianCostOre, robotObsidianCostClay, robotGeodeCostOre, robotGeodeCostObsidian
-  } = blueprint.get();
+  const { id, robotOreCostOre, robotClayCostOre, robotObsidianCostOre, robotObsidianCostClay, robotGeodeCostOre, robotGeodeCostObsidian } = blueprint.get();
   const maxOre = Math.max(robotOreCostOre, robotClayCostOre, robotObsidianCostOre, robotGeodeCostOre);
   let maxGeodesCracked = 0;
   const collectingStateSeen = new Set();
@@ -108,9 +98,7 @@ const solve = (blueprint, time) => {
   console.warn(`Start to solve Blueprint #${id}`);
   while (queue.length > 0) {
     const state = queue.shift();
-    let {
-      stockOre, stockClay, stockObsidian, stockGeode, robotsOre, robotsClay, robotsObsidian, robotsGeode, time
-    } = state.get();
+    let { stockOre, stockClay, stockObsidian, stockGeode, robotsOre, robotsClay, robotsObsidian, robotsGeode, time } = state.get();
     maxGeodesCracked = Math.max(maxGeodesCracked, stockGeode);
     // no time left
     if (time === 0) {
@@ -132,14 +120,14 @@ const solve = (blueprint, time) => {
       robotsObsidian = robotGeodeCostObsidian;
     }
     // standardize resources inventory
-    if (stockOre >= (time * maxOre) - (robotsOre * (time - 1))) {
-      stockOre = (time * maxOre) - (robotsOre * (time - 1));
+    if (stockOre >= time * maxOre - robotsOre * (time - 1)) {
+      stockOre = time * maxOre - robotsOre * (time - 1);
     }
-    if (stockClay >= (time * robotObsidianCostClay) - (robotsClay * (time - 1))) {
-      stockClay = (time * robotObsidianCostClay) - (robotsClay * (time - 1));
+    if (stockClay >= time * robotObsidianCostClay - robotsClay * (time - 1)) {
+      stockClay = time * robotObsidianCostClay - robotsClay * (time - 1);
     }
-    if (stockObsidian >= (time * robotGeodeCostObsidian) - (robotsObsidian * (time - 1))) {
-      stockObsidian = (time * robotGeodeCostObsidian) - (robotsObsidian * (time - 1));
+    if (stockObsidian >= time * robotGeodeCostObsidian - robotsObsidian * (time - 1)) {
+      stockObsidian = time * robotGeodeCostObsidian - robotsObsidian * (time - 1);
     }
 
     // update the collecting state
@@ -175,11 +163,35 @@ const solve = (blueprint, time) => {
     }
     // buy one robot for obsidian
     if (stockOre >= robotObsidianCostOre && stockClay >= robotObsidianCostClay) {
-      queue.push(new CollectingState(nextStockOre - robotObsidianCostOre, nextStockClay - robotObsidianCostClay, nextStockObsidian, nextStockGeode, robotsOre, robotsClay, robotsObsidian + 1, robotsGeode, nextTime));
+      queue.push(
+        new CollectingState(
+          nextStockOre - robotObsidianCostOre,
+          nextStockClay - robotObsidianCostClay,
+          nextStockObsidian,
+          nextStockGeode,
+          robotsOre,
+          robotsClay,
+          robotsObsidian + 1,
+          robotsGeode,
+          nextTime,
+        ),
+      );
     }
     // buy one robot for geode
     if (stockOre >= robotGeodeCostOre && stockObsidian >= robotGeodeCostObsidian) {
-      queue.push(new CollectingState(nextStockOre - robotGeodeCostOre, nextStockClay, nextStockObsidian - robotGeodeCostObsidian, nextStockGeode, robotsOre, robotsClay, robotsObsidian, robotsGeode + 1, nextTime));
+      queue.push(
+        new CollectingState(
+          nextStockOre - robotGeodeCostOre,
+          nextStockClay,
+          nextStockObsidian - robotGeodeCostObsidian,
+          nextStockGeode,
+          robotsOre,
+          robotsClay,
+          robotsObsidian,
+          robotsGeode + 1,
+          nextTime,
+        ),
+      );
     }
   }
   console.warn({ blueprint: id, time, best: maxGeodesCracked, len: collectingStateSeen.size });

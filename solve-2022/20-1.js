@@ -8,7 +8,7 @@ const parseData = (data) => {
   for (const [id, n] of dataset.entries()) {
     numbers.push({
       value: n,
-      position: id
+      position: id,
     });
   }
   return numbers;
@@ -20,7 +20,7 @@ const getNextPosition = ({ value, position }) => {
   if (value >= 0) {
     return next;
   }
-  return (next === 0) ? numbersLength : next;
+  return next === 0 ? numbersLength : next;
 };
 
 const mix = () => {

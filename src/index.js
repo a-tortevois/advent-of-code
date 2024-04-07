@@ -4,18 +4,15 @@ import querystring from 'node:querystring';
 
 import { AOC_COOKIE } from './aoc.secret.js';
 
-const [YEAR, DAY, LEVEL, REFRESH] = process.argv.slice(2);
+const [YEAR, DAY, LEVEL, CACHE_CONTROL] = process.argv.slice(2);
 const BASE_URL = 'https://adventofcode.com';
-const USE_CACHE = true;
+const USE_CACHE = CACHE_CONTROL !== 'no-cache';
 const CACHE_TIMEOUT = 3_600_000;
 const exampleFilePath = new URL('../.cache/example.txt', import.meta.url);
 const inputFilePath = new URL('../.cache/input.txt', import.meta.url);
 const MODE_DEV = process.env.NODE_ENV === 'dev';
 
 const isInputFileNotExistOrOutdated = async (filePath) => {
-  if (REFRESH === 'refresh') {
-    return true;
-  }
   let flag = true;
   try {
     const fh = await fs.open(filePath, 'r');
@@ -30,15 +27,15 @@ const isInputFileNotExistOrOutdated = async (filePath) => {
   return flag;
 };
 
-const getExample = async (day, useCache = false) => {
+const getExample = async (day, useCache = true) => {
   let example = '';
 
-  if (useCache && await isInputFileNotExistOrOutdated(exampleFilePath)) {
+  if (!useCache || (await isInputFileNotExistOrOutdated(exampleFilePath))) {
     console.warn('Refresh example file');
     try {
       const params = {
         method: 'GET',
-        headers: { 'Cookie': `session=${AOC_COOKIE}` }
+        headers: { Cookie: `session=${AOC_COOKIE}` },
       };
       const res = await fetch(`${BASE_URL}/${YEAR}/day/${day}`, params);
       if (res.status === 200) {
@@ -50,7 +47,7 @@ const getExample = async (day, useCache = false) => {
           example = example.replaceAll('&lt;', '<');
           await fs.writeFile(exampleFilePath, example, 'utf-8');
         } else {
-          throw new Error(`Unable to find an example`);
+          throw new Error('Unable to find an example');
         }
       } else {
         throw new Error(`Unable to get example, request failed with error code ${res.status}`);
@@ -74,15 +71,15 @@ const getExample = async (day, useCache = false) => {
   return example;
 };
 
-const getInput = async (day, useCache = false) => {
+const getInput = async (day, useCache = true) => {
   let input = '';
 
-  if (useCache && await isInputFileNotExistOrOutdated(inputFilePath)) {
+  if (!useCache || (await isInputFileNotExistOrOutdated(inputFilePath))) {
     console.warn('Refresh input file');
     try {
       const params = {
         method: 'GET',
-        headers: { 'Cookie': `session=${AOC_COOKIE}` }
+        headers: { Cookie: `session=${AOC_COOKIE}` },
       };
       const res = await fetch(`${BASE_URL}/${YEAR}/day/${day}/input`, params);
       if (res.status === 200) {
@@ -118,9 +115,9 @@ const submit = async (day, level, answer) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Cookie': `session=${AOC_COOKIE}`
+        Cookie: `session=${AOC_COOKIE}`,
       },
-      body: querystring.stringify({ level, answer })
+      body: querystring.stringify({ level, answer }),
     };
     const res = await fetch(`${BASE_URL}/${YEAR}/day/${day}/answer`, params);
     if (res.status === 200) {
@@ -134,7 +131,7 @@ const submit = async (day, level, answer) => {
         } else if (data.includes('too high')) {
           console.log('Too high!');
         } else {
-          console.log('That\'s not the right answer.');
+          console.log("That's not the right answer.");
         }
       } else if (data.includes('seem to be solving the right level')) {
         console.log('Invalid level');
@@ -153,7 +150,7 @@ const main = async () => {
   // console.clear();
   const example = await getExample(DAY, USE_CACHE);
   const input = await getInput(DAY, USE_CACHE);
-  // eslint-disable-next-line prefer-const
+  // biome-ignore lint/style/useConst:
   let answer = 0;
   const exampleAnswer = 0;
   try {
@@ -161,6 +158,7 @@ const main = async () => {
     const solution = await fh.readFile('utf-8');
     await fh.close();
     console.time('Exec time');
+    // biome-ignore lint/security/noGlobalEval:
     eval(solution);
     console.timeEnd('Exec time');
     if (MODE_DEV) {

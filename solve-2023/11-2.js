@@ -36,7 +36,7 @@ const getDistanceBetweenGalaxies = (g1, g2) => {
   const [yMin, yMax] = [g1.y, g2.y].sort((a, b) => a - b);
   const xOffset = emptyCols.filter((v) => v > xMin && v < xMax).length;
   const yOffset = emptyRows.filter((v) => v > yMin && v < yMax).length;
-  return getManhattanDistance(g1, g2) + ((xOffset + yOffset) * EXPANSION_FACTOR);
+  return getManhattanDistance(g1, g2) + (xOffset + yOffset) * EXPANSION_FACTOR;
 };
 
 const getAllPairs = () => {
@@ -46,7 +46,7 @@ const getAllPairs = () => {
       pairs.push({
         from: i,
         to: j,
-        len: getDistanceBetweenGalaxies(galaxies[i], galaxies[j])
+        len: getDistanceBetweenGalaxies(galaxies[i], galaxies[j]),
       });
     }
   }

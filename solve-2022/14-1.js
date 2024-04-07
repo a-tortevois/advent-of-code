@@ -9,7 +9,7 @@ const SAND_SOURCE = '+';
 
 const sandSource = {
   x: 500,
-  y: 0
+  y: 0,
 };
 
 const getGridIntervalFromData = (data) => {
@@ -18,21 +18,22 @@ const getGridIntervalFromData = (data) => {
   let Xmax = sandSource.x;
   let Ymin = sandSource.y; // Offset to 0
   let Ymax = sandSource.y;
-  let matches;
-  while ((matches = regex.exec(data)) !== null) {
+  let matches = regex.exec(data);
+  while (matches !== null) {
     if (matches.index === regex.lastIndex) {
       regex.lastIndex++;
     }
     matches.forEach((match, groupIndex) => {
       if (groupIndex === 1) {
-        Xmin = Math.min(Xmin, parseInt(match, 10));
-        Xmax = Math.max(Xmax, parseInt(match, 10));
+        Xmin = Math.min(Xmin, Number.parseInt(match, 10));
+        Xmax = Math.max(Xmax, Number.parseInt(match, 10));
       }
       if (groupIndex === 2) {
-        Ymin = Math.min(Ymin, parseInt(match, 10));
-        Ymax = Math.max(Ymax, parseInt(match, 10));
+        Ymin = Math.min(Ymin, Number.parseInt(match, 10));
+        Ymax = Math.max(Ymax, Number.parseInt(match, 10));
       }
     });
+    matches = regex.exec(data);
   }
   const W = Xmax - Xmin + 1;
   const H = Ymax - Ymin + 1;
@@ -40,12 +41,17 @@ const getGridIntervalFromData = (data) => {
   sandSource.x -= Xmin;
   sandSource.y -= Ymin;
   return {
-    Xmin, Xmax, Ymin, Ymax, W, H
+    Xmin,
+    Xmax,
+    Ymin,
+    Ymax,
+    W,
+    H,
   };
 };
 
 const normalizeCoords = (coord, gridSettings) => {
-  return { x: (coord.x - gridSettings.Xmin), y: (coord.y - gridSettings.Ymin) };
+  return { x: coord.x - gridSettings.Xmin, y: coord.y - gridSettings.Ymin };
 };
 
 const getCoordsFromString = (coordStr, gridSettings) => {
@@ -95,7 +101,7 @@ const dropOneGrainOfSand = (grid, gridSettings) => {
     return false;
   }
   while (y < gridSettings.H) {
-    if ((x - 1) < 0 || (x + 1) >= gridSettings.W || (y + 1) >= gridSettings.H) {
+    if (x - 1 < 0 || x + 1 >= gridSettings.W || y + 1 >= gridSettings.H) {
       console.warn('Out of bounds');
       return false;
     }

@@ -5,7 +5,7 @@ let H;
 let W;
 const startingPoint = {
   x: 0,
-  y: 0
+  y: 0,
 };
 
 const parseInput = () => {
@@ -27,9 +27,15 @@ const stringToCoord = (c) => {
   return { x, y };
 };
 
-const isValidCoord = (c) => (c.x >= 0 && c.x < W && c.y >= 0 && c.y < H);
+const isValidCoord = (c) => c.x >= 0 && c.x < W && c.y >= 0 && c.y < H;
 
-const getVonNeumannNeighborhoods = (c) => [{ x: c.x + 1, y: c.y }, { x: c.x - 1, y: c.y }, { x: c.x, y: c.y - 1 }, { x: c.x, y: c.y + 1 }].filter((c) => isValidCoord(c));
+const getVonNeumannNeighborhoods = (c) =>
+  [
+    { x: c.x + 1, y: c.y },
+    { x: c.x - 1, y: c.y },
+    { x: c.x, y: c.y - 1 },
+    { x: c.x, y: c.y + 1 },
+  ].filter((c) => isValidCoord(c));
 
 const isReachable = (c) => grid[c.y][c.x] !== '#';
 

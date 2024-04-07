@@ -9,7 +9,7 @@ const DIRECTION = {
   UP_TO_DOWN: { s: 'v', x: 0, y: 1 },
   DOWN_TO_UP: { s: '^', x: 0, y: -1 },
   RIGHT_TO_LEFT: { s: '<', x: -1, y: 0 },
-  LEFT_TO_RIGHT: { s: '>', x: 1, y: 0 }
+  LEFT_TO_RIGHT: { s: '>', x: 1, y: 0 },
 };
 
 let grid;
@@ -34,7 +34,7 @@ const strToBeam = (str) => {
   return { x, y, dir };
 };
 
-const isValidCoord = (c) => (c.x >= 0 && c.x < W && c.y >= 0 && c.y < H);
+const isValidCoord = (c) => c.x >= 0 && c.x < W && c.y >= 0 && c.y < H;
 
 const getNextDirections = (currentCell, currentDirection) => {
   if (currentCell === '.') {
@@ -83,16 +83,17 @@ const getNextDirections = (currentCell, currentDirection) => {
   }
 };
 
-const getNextBeams = (beam) => getNextDirections(grid[beam.y][beam.x], beam.dir)
-  .map((nextDir) => {
-    return {
-      x: beam.x + DIRECTION[nextDir].x,
-      y: beam.y + DIRECTION[nextDir].y,
-      dir: nextDir
-    };
-  })
-  .filter(isValidCoord)
-  .filter((nextCell) => !cellsVisited.has(beamToString(nextCell)));
+const getNextBeams = (beam) =>
+  getNextDirections(grid[beam.y][beam.x], beam.dir)
+    .map((nextDir) => {
+      return {
+        x: beam.x + DIRECTION[nextDir].x,
+        y: beam.y + DIRECTION[nextDir].y,
+        dir: nextDir,
+      };
+    })
+    .filter(isValidCoord)
+    .filter((nextCell) => !cellsVisited.has(beamToString(nextCell)));
 
 const execOneTick = () => {
   const nextBeams = [];
@@ -143,7 +144,7 @@ const main = () => {
     return {
       x: i,
       y: 0,
-      dir: UP_TO_DOWN
+      dir: UP_TO_DOWN,
     };
   });
 
@@ -152,7 +153,7 @@ const main = () => {
     return {
       x: i,
       y: H - 1,
-      dir: DOWN_TO_UP
+      dir: DOWN_TO_UP,
     };
   });
 
@@ -161,7 +162,7 @@ const main = () => {
     return {
       x: 0,
       y: i,
-      dir: LEFT_TO_RIGHT
+      dir: LEFT_TO_RIGHT,
     };
   });
 
@@ -170,7 +171,7 @@ const main = () => {
     return {
       x: W - 1,
       y: i,
-      dir: RIGHT_TO_LEFT
+      dir: RIGHT_TO_LEFT,
     };
   });
 

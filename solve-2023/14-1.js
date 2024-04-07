@@ -22,7 +22,7 @@ const parseInput = () => {
   }
 };
 
-const isValidCoord = (c) => (c.x >= 0 && c.x < W && c.y >= 0 && c.y < H);
+const isValidCoord = (c) => c.x >= 0 && c.x < W && c.y >= 0 && c.y < H;
 
 const moveAllToNorth = () => {
   for (const { x, y } of roundedRocks) {

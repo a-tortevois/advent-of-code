@@ -45,7 +45,7 @@ const getAllPairs = () => {
       pairs.push({
         from: i,
         to: j,
-        len: getDistanceBetweenGalaxies(galaxies[i], galaxies[j])
+        len: getDistanceBetweenGalaxies(galaxies[i], galaxies[j]),
       });
     }
   }

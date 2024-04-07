@@ -9,7 +9,7 @@ let H;
 let W;
 const startingPoint = {
   x: 0,
-  y: 0
+  y: 0,
 };
 const countsInMemory = [];
 
@@ -34,7 +34,12 @@ const stringToCoord = (c) => {
   return { x, y };
 };
 
-const getVonNeumannNeighborhoods = (c) => [{ x: c.x + 1, y: c.y }, { x: c.x - 1, y: c.y }, { x: c.x, y: c.y - 1 }, { x: c.x, y: c.y + 1 }];
+const getVonNeumannNeighborhoods = (c) => [
+  { x: c.x + 1, y: c.y },
+  { x: c.x - 1, y: c.y },
+  { x: c.x, y: c.y - 1 },
+  { x: c.x, y: c.y + 1 },
+];
 
 const safeModulo = (a, b) => ((a % b) + b) % b;
 
@@ -76,8 +81,8 @@ const getLagrangePolynomialCoefficients = ([y0, y1, y2]) => {
   // y0 = counts[0] => positions after 65 steps
   // y1 = counts[1] => positions after 196 steps (65 + 131)
   // y2 = counts[2] => positions after 327 steps (65 + 2 * 131)
-  const a = (y0 - (2 * y1) + y2) / 2;
-  const b = ((-3 * y0) + (4 * y1) - y2) / 2;
+  const a = (y0 - 2 * y1 + y2) / 2;
+  const b = (-3 * y0 + 4 * y1 - y2) / 2;
   const c = y0;
   return [a, b, c];
 };
@@ -85,12 +90,12 @@ const getLagrangePolynomialCoefficients = ([y0, y1, y2]) => {
 const interpolate = () => {
   const [a, b, c] = getLagrangePolynomialCoefficients(countsInMemory);
   const x = (STEPS - MIDDLE) / SIZE;
-  return (a * (x ** 2)) + (b * x) + c;
+  return a * x ** 2 + b * x + c;
 };
 
 const main = () => {
   parseInput();
-  const steps = MIDDLE + (SIZE * 2) + 1; // To cover three-map-by-three-map
+  const steps = MIDDLE + SIZE * 2 + 1; // To cover three-map-by-three-map
   walk(steps);
   return interpolate();
 };

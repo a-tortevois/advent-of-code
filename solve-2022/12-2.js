@@ -16,42 +16,42 @@ const parseInput = (lines) => {
   const grid = new Array(H);
   const startingPoint = {
     x: 0,
-    y: 0
+    y: 0,
   };
   const exitPoint = {
     x: 0,
-    y: 0
+    y: 0,
   };
   for (const i in lines) {
     const line = lines[i].split('');
     if (line.includes('S')) {
       startingPoint.x = line.indexOf('S');
-      startingPoint.y = parseInt(i, 10);
+      startingPoint.y = Number.parseInt(i, 10);
     }
     if (line.includes('E')) {
       exitPoint.x = line.indexOf('E');
-      exitPoint.y = parseInt(i, 10);
+      exitPoint.y = Number.parseInt(i, 10);
     }
     grid[i] = line.map((v) => getElevation(v));
   }
-  return [
-    H,
-    W,
-    startingPoint,
-    exitPoint,
-    grid
-  ];
+  return [H, W, startingPoint, exitPoint, grid];
 };
 
-const isValidCoord = (c) => (c.x >= 0 && c.x < W && c.y >= 0 && c.y < H);
+const isValidCoord = (c) => c.x >= 0 && c.x < W && c.y >= 0 && c.y < H;
 
-const isReachableCoord = (from, to) => (grid[from.y][from.x] - grid[to.y][to.x] <= 1);
+const isReachableCoord = (from, to) => grid[from.y][from.x] - grid[to.y][to.x] <= 1;
 
 const coordToString = (c) => `(${c.x};${c.y})`;
 
-const getNeighbours = (from) => [{ x: from.x + 1, y: from.y }, { x: from.x - 1, y: from.y }, { x: from.x, y: from.y - 1 }, { x: from.x, y: from.y + 1 }]
-  .filter((c) => isValidCoord(c))
-  .filter((c) => isReachableCoord(from, c));
+const getNeighbours = (from) =>
+  [
+    { x: from.x + 1, y: from.y },
+    { x: from.x - 1, y: from.y },
+    { x: from.x, y: from.y - 1 },
+    { x: from.x, y: from.y + 1 },
+  ]
+    .filter((c) => isValidCoord(c))
+    .filter((c) => isReachableCoord(from, c));
 
 const BFS = (from) => {
   const toVisit = [from];
@@ -91,13 +91,7 @@ const getStartingPoints = () => {
   return startingPoint;
 };
 
-const [
-  H,
-  W,
-  _,
-  exitPoint,
-  grid
-] = parseInput(input.split('\n'));
+const [H, W, _, exitPoint, grid] = parseInput(input.split('\n'));
 let bestPathSize = Number.POSITIVE_INFINITY;
 const coordsMap = BFS(exitPoint);
 for (const startingPoint of getStartingPoints()) {

@@ -4,7 +4,7 @@ const data = input;
 
 const PATTERN = {
   isNumber: /^\d+$/,
-  parseOperation: /^(\w+) ([+\-*/]) (\w+)$/
+  parseOperation: /^(\w+) ([+\-*/]) (\w+)$/,
 };
 
 const parseData = (data) => {

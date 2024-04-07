@@ -11,7 +11,12 @@ const parts = [
   {
     // ####
     height: 1,
-    rocks: [[0, 0], [1, 0], [2, 0], [3, 0]]
+    rocks: [
+      [0, 0],
+      [1, 0],
+      [2, 0],
+      [3, 0],
+    ],
   },
   {
     // .#.
@@ -23,8 +28,8 @@ const parts = [
       [0, 1],
       [1, 1],
       [2, 1],
-      [1, 2]
-    ]
+      [1, 2],
+    ],
   },
   {
     // ..#
@@ -36,8 +41,8 @@ const parts = [
       [1, 0],
       [2, 0],
       [2, 1],
-      [2, 2]
-    ]
+      [2, 2],
+    ],
   },
   {
     // #
@@ -45,14 +50,24 @@ const parts = [
     // #
     // #
     height: 4,
-    rocks: [[0, 0], [0, 1], [0, 2], [0, 3]]
+    rocks: [
+      [0, 0],
+      [0, 1],
+      [0, 2],
+      [0, 3],
+    ],
   },
   {
     // ##
     // ##
     height: 2,
-    rocks: [[0, 0], [0, 1], [1, 0], [1, 1]]
-  }
+    rocks: [
+      [0, 0],
+      [0, 1],
+      [1, 0],
+      [1, 1],
+    ],
+  },
 ];
 
 const parseData = (data) => data.split('');
@@ -67,7 +82,7 @@ const canMoveLeft = (rocks, fromCoord) => {
   for (const e in rocks) {
     const coordElem = {
       x: fromCoord.x + rocks[e][0],
-      y: fromCoord.y - rocks[e][1]
+      y: fromCoord.y - rocks[e][1],
     };
     if (coordElem.x - 1 < 0 || grid[coordElem.y][coordElem.x - 1] === '#') {
       return false;
@@ -80,7 +95,7 @@ const canMoveRight = (rocks, fromCoord) => {
   for (const e in rocks) {
     const coordElem = {
       x: fromCoord.x + rocks[e][0],
-      y: fromCoord.y - rocks[e][1]
+      y: fromCoord.y - rocks[e][1],
     };
     if (coordElem.x + 1 > ROOM_WIDE - 1 || grid[coordElem.y][coordElem.x + 1] === '#') {
       return false;
@@ -93,7 +108,7 @@ const canMoveDown = (rocks, fromCoord) => {
   for (const e in rocks) {
     const coordElem = {
       x: fromCoord.x + rocks[e][0],
-      y: fromCoord.y - rocks[e][1]
+      y: fromCoord.y - rocks[e][1],
     };
     if (coordElem.y + 1 > grid.length - 1 || grid[coordElem.y + 1][coordElem.x] === '#') {
       return false;
@@ -106,7 +121,7 @@ const putBlock = (rocks, fromCoord) => {
   for (const e in rocks) {
     const coordElem = {
       x: fromCoord.x + rocks[e][0],
-      y: fromCoord.y - rocks[e][1]
+      y: fromCoord.y - rocks[e][1],
     };
     grid[coordElem.y][coordElem.x] = '#';
   }
@@ -121,7 +136,7 @@ const printGrid = (part = null, fromCoord = null) => {
       for (const e in part.rocks) {
         const coordElem = {
           x: fromCoord.x + part.rocks[e][0],
-          y: fromCoord.y - part.rocks[e][1]
+          y: fromCoord.y - part.rocks[e][1],
         };
         if (coordElem.y === i) {
           row[coordElem.x] = '@';
@@ -139,14 +154,16 @@ const runFallingPart = (blocNum, iter, lastHighestRock) => {
     const rowsToAdd = lastHighestRock - UP_OFFSET - part.height;
     for (let i = 0; i > rowsToAdd; i--) {
       grid.unshift(getRow());
+      // biome-ignore lint/style/noParameterAssign:
       lastHighestRock++;
     }
     const fromCoord = {
       x: LEFT_OFFSET,
-      y: lastHighestRock - UP_OFFSET - 1
+      y: lastHighestRock - UP_OFFSET - 1,
     };
     while (true) {
       const move = getMove(iter);
+      // biome-ignore lint/style/noParameterAssign:
       iter++;
       switch (move) {
         case '>': {
@@ -169,10 +186,12 @@ const runFallingPart = (blocNum, iter, lastHighestRock) => {
         fromCoord.y++;
       } else {
         putBlock(part.rocks, fromCoord);
+        // biome-ignore lint/style/noParameterAssign:
         lastHighestRock = Math.min(lastHighestRock, fromCoord.y - part.height + 1);
         break;
       }
     }
+    // biome-ignore lint/style/noParameterAssign:
     blocNum++;
   }
   return grid.length - lastHighestRock;

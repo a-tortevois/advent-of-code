@@ -7,7 +7,7 @@ for (const c of input.split('\n')) {
     elfCaloriesCount.push(caloriesCount);
     caloriesCount = 0;
   } else {
-    caloriesCount += parseInt(c, 10);
+    caloriesCount += Number.parseInt(c, 10);
   }
 }
 const caloriesMax = elfCaloriesCount.sort((a, b) => b - a).slice(0, 3).reduce((p, v) => v + p);

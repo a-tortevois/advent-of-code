@@ -18,22 +18,22 @@ const parseData = (data) => {
   let distanceMax = Number.NEGATIVE_INFINITY;
   for (const [index, line] of data.split('\n').entries()) {
     const matches = [...line.matchAll(regex)];
-    const sensor = { x: parseInt(matches[0][1], 10), y: parseInt(matches[1][1], 10) };
-    const beacon = { x: parseInt(matches[2][1], 10), y: parseInt(matches[3][1], 10) };
+    const sensor = { x: Number.parseInt(matches[0][1], 10), y: Number.parseInt(matches[1][1], 10) };
+    const beacon = { x: Number.parseInt(matches[2][1], 10), y: Number.parseInt(matches[3][1], 10) };
     sensor.distance = getManhattanDistance(sensor, beacon);
     sensor.range = {
       // Xmin: sensor.x - sensor.distance,
       // Xmax: sensor.x + sensor.distance,
       Ymin: sensor.y - sensor.distance,
-      Ymax: sensor.y + sensor.distance
+      Ymax: sensor.y + sensor.distance,
     };
     // sensor.distanceFromOrigin = getManhattanDistance(sensor, {x: 0, y: 0});
     sensors.set(index, { ...sensor });
     if (sensor.y === TARGET_ROW) {
-      busyPositionOnTargetRow.add(parseInt(matches[0][1], 10));
+      busyPositionOnTargetRow.add(Number.parseInt(matches[0][1], 10));
     }
     if (beacon.y === TARGET_ROW) {
-      busyPositionOnTargetRow.add(parseInt(matches[2][1], 10));
+      busyPositionOnTargetRow.add(Number.parseInt(matches[2][1], 10));
     }
     Xmin = Math.min(Xmin, sensor.x, beacon.x);
     Xmax = Math.max(Xmax, sensor.x, beacon.x);
@@ -49,7 +49,15 @@ const parseData = (data) => {
   const W = Xmax - Xmin + 1;
   const H = Ymax - Ymin + 1;
   return {
-    sensors, busyPositionOnTargetRow, Xmin, Xmax, Ymin, Ymax, W, H, distanceMax
+    sensors,
+    busyPositionOnTargetRow,
+    Xmin,
+    Xmax,
+    Ymin,
+    Ymax,
+    W,
+    H,
+    distanceMax,
   };
 };
 
@@ -80,9 +88,7 @@ const getCoveredPositions = (usefulSensors, Xmin, Xmax) => {
   return hedgedPositions;
 };
 
-const {
-  sensors, busyPositionOnTargetRow, Xmin, Xmax, Ymin, Ymax, W, H, distanceMax
-} = parseData(data);
+const { sensors, busyPositionOnTargetRow, Xmin, Xmax, Ymin, Ymax, W, H, distanceMax } = parseData(data);
 const usefulSensors = getUsefulSensors(sensors);
 const hedgedPositions = getCoveredPositions(usefulSensors, Xmin, Xmax);
 

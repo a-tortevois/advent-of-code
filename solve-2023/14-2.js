@@ -11,7 +11,7 @@ const DIRECTION = {
   NORTH: { x: 0, y: -1 },
   WEST: { x: -1, y: 0 },
   SOUTH: { x: 0, y: 1 },
-  EAST: { x: 1, y: 0 }
+  EAST: { x: 1, y: 0 },
 };
 
 let grid;
@@ -32,7 +32,7 @@ const parseInput = () => {
   }
 };
 
-const isValidCoord = (c) => (c.x >= 0 && c.x < W && c.y >= 0 && c.y < H);
+const isValidCoord = (c) => c.x >= 0 && c.x < W && c.y >= 0 && c.y < H;
 
 const sortRoundedRocksBeforeMoveTo = (dir) => {
   roundedRocks.sort((a, b) => {
@@ -40,12 +40,12 @@ const sortRoundedRocksBeforeMoveTo = (dir) => {
       case 'NORTH':
       case 'WEST': {
         const diff = a.x - b.x;
-        return (diff !== 0) ? diff : a.y - b.y;
+        return diff !== 0 ? diff : a.y - b.y;
       }
       case 'SOUTH':
       case 'EAST': {
         const diff = b.y - a.y;
-        return (diff !== 0) ? diff : b.x - a.x;
+        return diff !== 0 ? diff : b.x - a.x;
       }
     }
   });
@@ -53,6 +53,7 @@ const sortRoundedRocksBeforeMoveTo = (dir) => {
 
 const moveAllTo = (dir) => {
   sortRoundedRocksBeforeMoveTo(dir);
+  // biome-ignore lint/style/noParameterAssign:
   dir = DIRECTION[dir];
   for (const r of roundedRocks) {
     let c = { x: r.x + dir.x, y: r.y + dir.y };

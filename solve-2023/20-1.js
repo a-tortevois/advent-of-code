@@ -5,7 +5,7 @@ const MODULE = {
   BROADCASTER: 'broadcaster',
   CONJONCTION: 'conjonction',
   FLIP_FLOP: 'flip-flop',
-  OUTPUT: 'output'
+  OUTPUT: 'output',
 };
 
 // Pulse states:
@@ -30,7 +30,7 @@ const parseInput = () => {
       const type = module.startsWith('&') ? MODULE.CONJONCTION : MODULE.FLIP_FLOP;
       modules[name] = {
         type,
-        destinations
+        destinations,
       };
       if (type === MODULE.FLIP_FLOP) {
         modules[name].state = false;
@@ -66,11 +66,13 @@ const doConjonction = (state) => {
 };
 
 const pressButton = (cycle) => {
-  const queue = [{
-    from: MODULE.BUTTON,
-    name: MODULE.BROADCASTER,
-    pulse: false
-  }];
+  const queue = [
+    {
+      from: MODULE.BUTTON,
+      name: MODULE.BROADCASTER,
+      pulse: false,
+    },
+  ];
   while (queue.length > 0) {
     const state = queue.shift();
     const stateHash = JSON.stringify(state);
@@ -81,7 +83,8 @@ const pressButton = (cycle) => {
     }
     if (modules[state.name].type === MODULE.OUTPUT) {
       continue;
-    } else if (modules[state.name].type === MODULE.CONJONCTION) {
+    }
+    if (modules[state.name].type === MODULE.CONJONCTION) {
       doConjonction(state);
     } else if (modules[state.name].type === MODULE.FLIP_FLOP) {
       if (state.pulse) {
@@ -93,7 +96,7 @@ const pressButton = (cycle) => {
       queue.push({
         from: state.name,
         name,
-        pulse: state.pulse
+        pulse: state.pulse,
       });
     }
   }
@@ -108,7 +111,7 @@ const execCycles = () => {
 const computePulses = () => {
   const pulses = {
     low: 0,
-    high: 0
+    high: 0,
   };
   for (const state of [...visitedState.keys()]) {
     const cycles = visitedState.get(state).length;
@@ -118,7 +121,7 @@ const computePulses = () => {
       pulses.low += cycles;
     }
   }
-  return (pulses.high * pulses.low);
+  return pulses.high * pulses.low;
 };
 
 const main = () => {

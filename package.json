@@ -5,11 +5,10 @@
   "scripts": {
     "aoc": "node src/index.js",
     "aoc:dev": "cross-env NODE_ENV=dev node --watch-path=./solve-2023 src/index.js",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "npx @biomejs/biome lint --apply ."
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "eslint": "8.53.0",
-    "eslint-plugin-jsdoc": "46.9.0"
+    "@biomejs/biome": "latest"
   }
 }

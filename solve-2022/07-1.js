@@ -36,10 +36,10 @@ const getNodeTree = () => {
       // Increase size for all parentNode
       let node = actualNode;
       while (node !== null) {
-        node.size += parseInt(line[0], 10);
+        node.size += Number.parseInt(line[0], 10);
         node = node.parentNode;
       }
-      actualNode.childNode.push(new Node(line[1], NODE_TYPE_FILE, actualNode, parseInt(line[0], 10)));
+      actualNode.childNode.push(new Node(line[1], NODE_TYPE_FILE, actualNode, Number.parseInt(line[0], 10)));
     }
   }
 

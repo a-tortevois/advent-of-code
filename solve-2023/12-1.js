@@ -6,7 +6,7 @@ const parseInput = () => {
     const [records, sizes] = line.split(' ');
     data.push({
       records,
-      sizes: sizes.split(',').map(Number)
+      sizes: sizes.split(',').map(Number),
     });
   }
   return data;
@@ -14,10 +14,10 @@ const parseInput = () => {
 
 const getNbArrangements = (records, sizes) => {
   if (records.length === 0) {
-    return (sizes.length === 0) ? 1 : 0;
+    return sizes.length === 0 ? 1 : 0;
   }
   if (sizes.length === 0) {
-    return (records.includes('#')) ? 0 : 1;
+    return records.includes('#') ? 0 : 1;
   }
 
   if (records[0] === '.') {
@@ -38,8 +38,7 @@ const getNbArrangements = (records, sizes) => {
     return getNbArrangements(records.slice(current + 1), rest);
   }
 
-  return getNbArrangements(`#${records.slice(1)}`, sizes)
-       + getNbArrangements(`.${records.slice(1)}`, sizes);
+  return getNbArrangements(`#${records.slice(1)}`, sizes) + getNbArrangements(`.${records.slice(1)}`, sizes);
 };
 
 const main = () => {

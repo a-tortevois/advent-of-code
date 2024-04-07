@@ -15,7 +15,7 @@ const parseInput = () => {
         if (groups) {
           const obj = {
             part: groups.part,
-            output: groups.output
+            output: groups.output,
           };
           if (groups.operator === '>') {
             obj.comparator = (value) => value > Number(groups.value);

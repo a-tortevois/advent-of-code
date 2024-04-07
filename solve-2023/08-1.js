@@ -9,13 +9,13 @@ const parseInput = () => {
     const matches = regex.exec(line);
     coordinates[matches[1]] = {
       L: matches[2],
-      R: matches[3]
+      R: matches[3],
     };
   }
 
   return {
     instructions: instructions.split(''),
-    coordinates
+    coordinates,
   };
 };
 

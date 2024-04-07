@@ -13,6 +13,7 @@ const getDistancesTo = (valves, fromValve) => {
   }
   distanceTo[fromValve] = 0;
   const computeDistances = (edges, distance) => {
+    // biome-ignore lint/style/noParameterAssign:
     distance++;
     for (const edge of edges) {
       if (distance < distanceTo[edge]) {
@@ -25,7 +26,7 @@ const getDistancesTo = (valves, fromValve) => {
   // Remove unused valves
   for (const edge of Object.keys(distanceTo)) {
     if (valves[edge].flowRate === 0) {
-      delete (distanceTo[edge]);
+      delete distanceTo[edge];
     }
   }
   return distanceTo;
@@ -38,8 +39,8 @@ const parseData = (data) => {
   for (const [index, line] of data.split('\n').entries()) {
     const matches = Array.from(...line.matchAll(regex));
     valves[matches[1]] = {
-      flowRate: parseInt(matches[2], 10),
-      children: matches[3].split(',').map((v) => v.trim())
+      flowRate: Number.parseInt(matches[2], 10),
+      children: matches[3].split(',').map((v) => v.trim()),
     };
   }
   for (const valve of Object.keys(valves)) {
@@ -56,7 +57,7 @@ const parseData = (data) => {
   // Remove unused valves
   for (const valve of Object.keys(valves)) {
     if (valve !== STARTING_VALVE && !valvesToOpen.includes(valve)) {
-      delete (valves[valve]);
+      delete valves[valve];
     }
   }
   return { valves, valvesToOpen };
@@ -84,10 +85,13 @@ const exploreAllPaths = (valves, fromValve, valvesToOpen, path = [], elapsedTime
       localRelatedPressure += (TIME_BEFORE_VOLCANO_ERUPTS - localElapsedTime) * valves[valve].flowRate;
       localValvesToOpen = valvesToOpen.filter((valveToOpen) => valveToOpen !== valve);
     }
+    // biome-ignore lint/style/noParameterAssign:
     [maximalPressureReleased, maximalPath] = exploreAllPaths(valves, valve, localValvesToOpen, Array.from(path), localElapsedTime, localRelatedPressure, maximalPressureReleased, maximalPath);
   }
   if (releasedPressure > maximalPressureReleased) {
+    // biome-ignore lint/style/noParameterAssign:
     maximalPath = path.join(',');
+    // biome-ignore lint/style/noParameterAssign:
     maximalPressureReleased = releasedPressure;
   }
   return [maximalPressureReleased, maximalPath];

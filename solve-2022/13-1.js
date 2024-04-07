@@ -22,7 +22,7 @@ const comparePackets = (packet1, packet2) => {
     return packet1.length - packet2.length;
   }
   // Mixed types
-  return (typeof packet1 === 'object') ? comparePackets(packet1, [packet2]) : comparePackets([packet1], packet2);
+  return typeof packet1 === 'object' ? comparePackets(packet1, [packet2]) : comparePackets([packet1], packet2);
 };
 
 const packetPairs = input.split('\n\n').map((v) => v.split('\n').map(JSON.parse));

@@ -15,8 +15,8 @@ const parseData = (data) => {
   let distanceMax = Number.NEGATIVE_INFINITY;
   for (const [index, line] of data.split('\n').entries()) {
     const matches = [...line.matchAll(regex)];
-    const sensor = { x: parseInt(matches[0][1], 10), y: parseInt(matches[1][1], 10) };
-    const beacon = { x: parseInt(matches[2][1], 10), y: parseInt(matches[3][1], 10) };
+    const sensor = { x: Number.parseInt(matches[0][1], 10), y: Number.parseInt(matches[1][1], 10) };
+    const beacon = { x: Number.parseInt(matches[2][1], 10), y: Number.parseInt(matches[3][1], 10) };
     sensor.distance = getManhattanDistance(sensor, beacon);
     // sensor.range = {
     //     Xmin: sensor.x - sensor.distance,
@@ -40,7 +40,14 @@ const parseData = (data) => {
   const W = Xmax - Xmin + 1;
   const H = Ymax - Ymin + 1;
   return {
-    sensors, Xmin, Xmax, Ymin, Ymax, W, H, distanceMax
+    sensors,
+    Xmin,
+    Xmax,
+    Ymin,
+    Ymax,
+    W,
+    H,
+    distanceMax,
   };
 };
 
@@ -76,10 +83,8 @@ const searchNearbyBeacon = (sensors) => {
   }
 };
 
-const {
-  sensors, Xmin, Xmax, Ymin, Ymax, W, H, distanceMax
-} = parseData(data);
+const { sensors, Xmin, Xmax, Ymin, Ymax, W, H, distanceMax } = parseData(data);
 const sensorsSortedByDistanceFromOrigin = getSensorsSortedByDistranceFromOrigin(sensors);
 const { x, y } = searchNearbyBeacon(sensorsSortedByDistanceFromOrigin);
 
-const answer = (x * 4_000_000) + y;
+const answer = x * 4_000_000 + y;

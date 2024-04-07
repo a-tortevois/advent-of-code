@@ -11,7 +11,7 @@ const consumeCycle = () => {
     process.stdout.write('\n');
     cyclesCount = 0;
   }
-  const pixel = (cyclesCount >= (spritePos - 1) && cyclesCount <= (spritePos + 1)) ? '█' : ' ';
+  const pixel = cyclesCount >= spritePos - 1 && cyclesCount <= spritePos + 1 ? '█' : ' ';
   process.stdout.write(pixel);
   cyclesCount++;
 };
@@ -22,7 +22,7 @@ for (const instruction of instructions) {
   } else if (instruction[0] === 'addx') {
     consumeCycle();
     consumeCycle();
-    spritePos += parseInt(instruction[1], 10);
+    spritePos += Number.parseInt(instruction[1], 10);
   }
 }
 

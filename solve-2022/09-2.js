@@ -3,10 +3,10 @@
 const DEBUG = false;
 const W = 26; // x => from example
 const H = 21; // y => from example
-const initPosX = (DEBUG) ? 11 : 0; // from example
-const initPosY = (DEBUG) ? 15 : 0; // from example
+const initPosX = DEBUG ? 11 : 0; // from example
+const initPosY = DEBUG ? 15 : 0; // from example
 
-const lines = (DEBUG) ? example : input;
+const lines = DEBUG ? example : input;
 
 let Xmin = 0;
 let Xmax = 0;
@@ -14,10 +14,10 @@ let Ymin = 0;
 let Ymax = 0;
 
 const MOVES = {
-  'U': [0, -1],
-  'D': [0, 1],
-  'L': [-1, 0],
-  'R': [1, 0]
+  U: [0, -1],
+  D: [0, 1],
+  L: [-1, 0],
+  R: [1, 0],
 };
 
 const visited = new Set();
@@ -32,7 +32,7 @@ const printGrid = (h, w) => {
     for (let j = 0; j < w; j++) {
       for (const k in knots) {
         if (knots[k].x === j && knots[k].y === i) {
-          row[j] = (k === '0') ? 'H' : k;
+          row[j] = k === '0' ? 'H' : k;
           break;
         }
       }
@@ -43,7 +43,7 @@ const printGrid = (h, w) => {
 
 const printVisited = (Xmin, Xmax, Ymin, Ymax) => {
   for (let i = Ymin; i <= Ymax; i++) {
-    const row = Array.from({ length: (Xmax - Xmin + 1) }, () => '.');
+    const row = Array.from({ length: Xmax - Xmin + 1 }, () => '.');
     for (let j = Xmin; j <= Xmax; j++) {
       if (visited.has(`(${j},${i})`)) {
         row[j - Xmin] = '#';
@@ -82,7 +82,7 @@ for (const line of lines.split('\n')) {
     console.log('\n==', line, '==\n');
   }
   const [dir, _steps] = line.split(' ');
-  const steps = parseInt(_steps, 10);
+  const steps = Number.parseInt(_steps, 10);
   for (let i = 0; i < steps; i++) {
     knots[0].x += MOVES[dir][0];
     knots[0].y += MOVES[dir][1];

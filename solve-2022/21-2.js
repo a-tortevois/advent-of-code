@@ -4,7 +4,7 @@ const data = input;
 
 const PATTERN = {
   isNumber: /^\d+$/,
-  parseOperation: /^(\w+) ([+\-*/]) (\w+)$/
+  parseOperation: /^(\w+) ([+\-*/]) (\w+)$/,
 };
 
 const ROOT_OPERAND = 'root';
@@ -64,22 +64,23 @@ const getReversedOperation = (searchOperand) => {
         id,
         operand1: id,
         operator: getReversedOperator(operator),
-        operand2
+        operand2,
       };
-    } else if (operand2 === searchOperand) {
+    }
+    if (operand2 === searchOperand) {
       if (operator === '+' || operator === '*') {
         return {
           id,
           operand1: id,
           operator: getReversedOperator(operator),
-          operand2: operand1
+          operand2: operand1,
         };
       }
       return {
         id,
         operand1,
         operator,
-        operand2: id
+        operand2: id,
       };
     }
   }
